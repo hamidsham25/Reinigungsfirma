@@ -1,0 +1,9 @@
+Random Notizen
+==============
+
+- Idee: Landingpage mit klarerem Hero-Text testen.
+- ToDo: Preise für Basis, Standard und Premium vergleichen.
+- Erinnerung: Bilder für Team-Sektion sammeln.
+- Notiz: Kontaktformular spaeter mit Erfolgsmeldung erweitern.
+- Gedanke: Kundenbewertungen auf Startseite weiter oben platzieren.
+- Check: Impressum und Datenschutz nochmal durchlesen.
