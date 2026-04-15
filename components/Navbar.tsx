@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 const serviceLinks = [
@@ -17,11 +17,15 @@ export default function Navbar() {
   const pathname = usePathname();
   const isLegalPage =
     pathname === "/impressum" || pathname === "/datenschutz";
+  const isHome = pathname === "/";
+  const isLeistungenPage = pathname.startsWith("/leistungen");
+  const isJobsPage = pathname === "/jobs";
   const phoneHref = "tel:+495111234567";
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const isTransparent = !isLegalPage && !isScrolled;
+  const [activeSection, setActiveSection] = useState("");
+  const isTransparent = !isLegalPage && !isScrolled && !mobileOpen;
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50);
@@ -31,11 +35,47 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
+    if (!isHome) return;
+
+    const sections = ["leistungen", "ueber-uns", "kontakt"];
+    const updateActiveSection = () => {
+      const scrollOffset = window.scrollY + 170;
+      let current = "";
+
+      sections.forEach((id) => {
+        const section = document.getElementById(id);
+        if (section && scrollOffset >= section.offsetTop) {
+          current = id;
+        }
+      });
+
+      setActiveSection(current);
     };
-  }, [mobileOpen]);
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("hashchange", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("hashchange", updateActiveSection);
+    };
+  }, [isHome]);
+
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isHome) {
+      setMobileOpen(false);
+      return;
+    }
+
+    event.preventDefault();
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (window.location.hash) {
+      window.history.replaceState(null, "", "/");
+    }
+  };
 
   return (
     <header
@@ -47,15 +87,19 @@ export default function Navbar() {
             : "border-b border-slate-200/80 bg-white/95"
       }`}
     >
-      <nav className="mx-auto flex h-[7.25rem] w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="relative flex h-[6rem] w-[20rem] items-center">
+      <nav className="relative mx-auto flex h-[7.25rem] w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          onClick={handleLogoClick}
+          className="relative z-20 flex h-[5.6rem] w-[14rem] shrink-0 items-center sm:h-[6.2rem] sm:w-[17rem] lg:h-[7rem] lg:w-[24.5rem]"
+        >
           <Image
             src="/images/logo_white.png"
             alt="REIN Gebäudeservice Logo"
             width={430}
             height={128}
             priority
-            className={`absolute left-0 h-[6rem] w-auto transition-opacity duration-300 ${
+            className={`absolute left-0 h-[5.6rem] w-auto transition-opacity duration-300 sm:h-[6.2rem] lg:h-[7rem] lg:origin-left lg:scale-[1.2] ${
               isTransparent ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -64,13 +108,13 @@ export default function Navbar() {
             alt="REIN Gebäudeservice Logo"
             width={430}
             height={128}
-            className={`absolute left-0 h-[6rem] w-auto transition-opacity duration-300 ${
+            className={`absolute left-0 h-[5.6rem] w-auto transition-opacity duration-300 sm:h-[6.2rem] lg:h-[7rem] lg:origin-left lg:scale-[1.2] ${
               isTransparent ? "opacity-0" : "opacity-100"
             }`}
           />
         </Link>
 
-        <div className="hidden items-center gap-7 lg:flex">
+        <div className="hidden items-center gap-7 lg:absolute lg:left-1/2 lg:z-10 lg:flex lg:-translate-x-1/2">
           <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(true)}
@@ -78,7 +122,9 @@ export default function Navbar() {
           >
             <button
               className={`text-sm font-semibold uppercase tracking-wide transition ${
-                isTransparent
+                isLeistungenPage || (isHome && activeSection === "leistungen")
+                  ? "text-[#FFA400]"
+                  : isTransparent
                   ? "text-white hover:text-slate-200"
                   : "text-slate-700 hover:text-[#1B4F72]"
               }`}
@@ -107,7 +153,9 @@ export default function Navbar() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="block px-4 py-2 text-sm text-slate-600 transition hover:bg-slate-50 hover:text-[#1B4F72]"
+                      className={`block px-4 py-2 text-sm transition hover:bg-slate-50 hover:text-[#FFA400] ${
+                        pathname === item.href ? "text-[#FFA400]" : "text-slate-600"
+                      }`}
                     >
                       {item.label}
                     </Link>
@@ -119,7 +167,9 @@ export default function Navbar() {
           <Link
             href="/#ueber-uns"
             className={`text-sm font-semibold uppercase tracking-wide transition ${
-              isTransparent
+              isHome && activeSection === "ueber-uns"
+                ? "text-[#FFA400]"
+                : isTransparent
                 ? "text-white hover:text-slate-200"
                 : "text-slate-700 hover:text-[#1B4F72]"
             }`}
@@ -129,7 +179,9 @@ export default function Navbar() {
           <Link
             href="/jobs"
             className={`text-sm font-semibold uppercase tracking-wide transition ${
-              isTransparent
+              isJobsPage
+                ? "text-[#FFA400]"
+                : isTransparent
                 ? "text-white hover:text-slate-200"
                 : "text-slate-700 hover:text-[#1B4F72]"
             }`}
@@ -139,7 +191,9 @@ export default function Navbar() {
           <Link
             href="/#kontakt"
             className={`text-sm font-semibold uppercase tracking-wide transition ${
-              isTransparent
+              isHome && activeSection === "kontakt"
+                ? "text-[#FFA400]"
+                : isTransparent
                 ? "text-white hover:text-slate-200"
                 : "text-slate-700 hover:text-[#1B4F72]"
             }`}
@@ -153,8 +207,8 @@ export default function Navbar() {
             href={phoneHref}
             className={`inline-flex h-11 w-11 items-center justify-center rounded-full text-sm font-semibold transition hover:-translate-y-0.5 ${
               isTransparent
-                ? "border border-white/60 bg-white/15 text-white hover:bg-white/25"
-                : "border border-[#1B4F72]/20 bg-white text-[#1B4F72] shadow-lg shadow-[#1B4F72]/10 hover:bg-slate-50"
+                ? "border border-[#FFA400]/70 bg-[#FFA400] text-white shadow-lg shadow-[#FFA400]/35 hover:bg-[#E59400]"
+                : "border border-[#FFA400]/70 bg-[#FFA400] text-white shadow-lg shadow-[#FFA400]/30 hover:bg-[#E59400]"
             }`}
             aria-label="Jetzt anrufen"
           >
@@ -164,8 +218,8 @@ export default function Navbar() {
             href="/#kontakt"
             className={`rounded-full px-6 py-3 text-sm font-semibold transition hover:-translate-y-0.5 ${
               isTransparent
-                ? "border border-white/60 bg-white/15 text-white hover:bg-white/25"
-                : "bg-[#1B4F72] text-white shadow-lg shadow-[#1B4F72]/25 hover:bg-[#163f5b]"
+                ? "border border-[#FFA400]/70 bg-[#FFA400] text-white shadow-lg shadow-[#FFA400]/35 hover:bg-[#E59400]"
+                : "bg-[#FFA400] text-white shadow-lg shadow-[#FFA400]/25 hover:bg-[#E59400]"
             }`}
           >
             Angebot anfragen
@@ -193,85 +247,78 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed inset-0 z-50 bg-white p-6 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-x-0 bottom-0 top-[7.25rem] z-40 lg:hidden"
           >
-            <div className="mb-8 flex items-center justify-between">
-              <Image
-                src="/images/logo-transparent.png"
-                alt={"REIN Geb\u00e4udeservice Logo"}
-                width={300}
-                height={90}
-                className="h-[3.7rem] w-auto"
-              />
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="rounded border border-slate-300 px-3 py-1 text-sm text-slate-600"
-              >
-                Schließen
-              </button>
-            </div>
+            <div className="absolute inset-0" onClick={() => setMobileOpen(false)} />
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.99 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="relative z-10 max-h-[calc(100vh-7.25rem)] overflow-y-auto border-t border-slate-200 bg-white px-6 pt-5 pb-3 shadow-2xl"
+            >
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  Leistungen
+                </p>
+                {serviceLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block text-base font-medium text-slate-700"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
 
-            <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                Leistungen
-              </p>
-              {serviceLinks.map((item) => (
+              <div className="mt-6 space-y-3 border-t border-slate-200 pt-6">
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  href="/#ueber-uns"
                   onClick={() => setMobileOpen(false)}
                   className="block text-base font-medium text-slate-700"
                 >
-                  {item.label}
+                  Über uns
                 </Link>
-              ))}
-            </div>
+                <Link
+                  href="/jobs"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-base font-medium text-slate-700"
+                >
+                  Stellenangebote
+                </Link>
+                <Link
+                  href="/#kontakt"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-base font-medium text-slate-700"
+                >
+                  Kontakt
+                </Link>
+              </div>
 
-            <div className="mt-6 space-y-3 border-t border-slate-200 pt-6">
-              <Link
-                href="/#ueber-uns"
-                onClick={() => setMobileOpen(false)}
-                className="block text-base font-medium text-slate-700"
-              >
-                Über uns
-              </Link>
-              <Link
-                href="/jobs"
-                onClick={() => setMobileOpen(false)}
-                className="block text-base font-medium text-slate-700"
-              >
-                Stellenangebote
-              </Link>
-              <Link
-                href="/#kontakt"
-                onClick={() => setMobileOpen(false)}
-                className="block text-base font-medium text-slate-700"
-              >
-                Kontakt
-              </Link>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href={phoneHref}
-                onClick={() => setMobileOpen(false)}
-                className="inline-flex h-11 w-11 items-center justify-center rounded border border-slate-300 text-base text-slate-700"
-                aria-label="Jetzt anrufen"
-              >
-                <span aria-hidden>📞</span>
-              </Link>
-              <Link
-                href="/#kontakt"
-                onClick={() => setMobileOpen(false)}
-                className="inline-flex rounded bg-[#1B4F72] px-5 py-2.5 text-sm font-semibold text-white"
-              >
-                Angebot anfragen
-              </Link>
-            </div>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href={phoneHref}
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded border border-[#FFA400]/60 bg-[#FFF1CC] text-base text-[#E59400]"
+                  aria-label="Jetzt anrufen"
+                >
+                  <span aria-hidden>📞</span>
+                </Link>
+                <Link
+                  href="/#kontakt"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex rounded bg-[#FFA400] px-5 py-2.5 text-sm font-semibold text-white"
+                >
+                  Angebot anfragen
+                </Link>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

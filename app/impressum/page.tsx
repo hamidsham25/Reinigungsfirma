@@ -1,3 +1,13 @@
+import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Impressum",
+  description:
+    "Impressum von REIN Gebäudeservice mit allen Pflichtangaben gemäß § 5 TMG.",
+  path: "/impressum",
+});
+
 export default function ImpressumPage() {
   return (
     <main className="mx-auto w-full max-w-4xl px-4 pb-16 pt-40 sm:px-6 lg:px-8">

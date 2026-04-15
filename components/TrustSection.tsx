@@ -5,22 +5,18 @@ import { motion } from "motion/react";
 
 const trustItems = [
   {
-    marker: "01",
     title: "Erfahrung & Fachkompetenz",
     description: "Über 10 Jahre Erfahrung in Büro-, Praxis- und Kita-Reinigung.",
   },
   {
-    marker: "02",
     title: "Zuverlässigkeit & Qualität",
     description: "Pünktlich, gründlich und konstant – darauf können Sie sich verlassen.",
   },
   {
-    marker: "03",
     title: "Flexibilität & Service",
     description: "Individuelle Reinigungspläne und flexible Einsatzzeiten.",
   },
   {
-    marker: "04",
     title: "Starkes Preis-Leistungs-Verhältnis",
     description: "Faire, transparente Preise ohne versteckte Zusatzkosten.",
   },
@@ -60,12 +56,9 @@ export default function TrustSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.35 }}
               transition={{ duration: 0.4, delay: index * 0.06 }}
-              className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm"
+              className="rounded-none rounded-br-3xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm"
             >
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white/10 text-xs font-bold">
-                {item.marker}
-              </span>
-              <h3 className="mt-4 text-lg font-semibold leading-snug text-white">
+              <h3 className="text-lg font-semibold leading-snug text-white">
                 {item.title}
               </h3>
               <p className="mt-2 text-sm leading-6 text-slate-100/95">

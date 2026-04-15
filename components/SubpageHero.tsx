@@ -119,7 +119,7 @@ export default function SubpageHero({
           {ctaHref && ctaLabel ? (
             <Link
               href={ctaHref}
-              className="mt-8 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#1B4F72] shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-slate-100"
+              className="mt-8 inline-flex rounded-full bg-[#FFA400] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#FFA400]/35 transition hover:-translate-y-0.5 hover:bg-[#E59400]"
             >
               {ctaLabel}
             </Link>

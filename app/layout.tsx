@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import {
+  DEFAULT_KEYWORDS,
+  DEFAULT_OG_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  createPageMetadata,
+  localBusinessJsonLd,
+} from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,9 +23,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "REIN Geb\u00e4udeservice | Professionelle Reinigung in Hannover",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} | Gebäudereinigung in Hannover`,
+    template: `%s | ${SITE_NAME}`,
+  },
   description:
-    "Professionelle Gebäudereinigung für Büro, Praxis, Kita und Sanitärbereiche in Hannover & Region.",
+    "Professionelle Gebäudereinigung in Hannover und Region: Büro, Praxis, Kita und Sanitärbereiche. Zuverlässige Qualität und schnelle Angebotsanfrage.",
+  applicationName: SITE_NAME,
+  keywords: DEFAULT_KEYWORDS,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: createPageMetadata({
+    title: `${SITE_NAME} | Gebäudereinigung in Hannover`,
+    description:
+      "REIN Gebäudeservice reinigt Büros, Praxen, Kitas und Sanitärbereiche in Hannover und Region.",
+    path: "/",
+    image: DEFAULT_OG_IMAGE,
+  }).openGraph,
+  twitter: createPageMetadata({
+    title: `${SITE_NAME} | Gebäudereinigung in Hannover`,
+    description:
+      "Professionelle Gebäudereinigung mit klaren Abläufen und schneller Rückmeldung in Hannover.",
+    path: "/",
+    image: DEFAULT_OG_IMAGE,
+  }).twitter,
 };
 
 export default function RootLayout({
@@ -32,6 +74,10 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body className="min-h-full bg-white text-slate-900">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
         <Navbar />
         {children}
         <Footer />

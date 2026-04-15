@@ -1,8 +1,25 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { MouseEvent } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  const handleStartseiteClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isHome) return;
+
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (window.location.hash) {
+      window.history.replaceState(null, "", "/");
+    }
+  };
 
   return (
     <footer className="bg-[#1B4F72] text-white">
@@ -11,9 +28,9 @@ export default function Footer() {
           <Image
             src="/images/logo_white.png"
             alt="REIN Gebäudeservice Logo"
-            width={340}
-            height={100}
-            className="h-20 w-auto"
+            width={420}
+            height={124}
+            className="h-24 w-auto"
           />
           <p className="mt-4 max-w-xs text-sm text-slate-200">
             Rein-Gebäudeservice – Professionelle Gebäudereinigung für
@@ -26,7 +43,11 @@ export default function Footer() {
             Navigation
           </h3>
           <div className="mt-4 space-y-2 text-sm">
-            <Link href="/" className="block text-slate-100 hover:text-white">
+            <Link
+              href="/"
+              onClick={handleStartseiteClick}
+              className="block text-slate-100 hover:text-white"
+            >
               Startseite
             </Link>
             <Link href="/#ueber-uns" className="block text-slate-100 hover:text-white">
