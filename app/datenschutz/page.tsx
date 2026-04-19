@@ -18,6 +18,7 @@ export default function DatenschutzPage() {
           1. Verantwortlicher
         </h2>
         <p>REIN Gebäudeservice</p>
+        <p>Rechtsform: Einzelunternehmen</p>
         <p>Inhaber: Omed Sham</p>
         <p>Westerriede 3, 30966 Hemmingen</p>
         <p>E-Mail: info@rein-gebaeudeservice.de</p>
@@ -130,7 +131,38 @@ export default function DatenschutzPage() {
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
-          5. Kein Newsletter, keine Reichweiten- oder Nutzeranalyse
+          5. Bewerbungen (Online-Formular)
+        </h2>
+        <p>
+          Wenn Sie sich über unser Bewerbungsformular bewerben, verarbeiten wir
+          die von Ihnen angegebenen Bewerberdaten (z.&nbsp;B. Name, Kontaktdaten,
+          Angaben zu Erfahrung und Verfügbarkeit, freiwillige Nachricht sowie
+          ggf. ein PDF-Anhang) zum Zweck der Durchführung des Bewerbungsverfahrens.
+        </p>
+        <p>
+          Rechtsgrundlage für die Verarbeitung ist §&nbsp;26 Abs.&nbsp;1 BDSG in
+          Verbindung mit Art.&nbsp;88 DSGVO (sofern anwendbar) sowie Art.&nbsp;6
+          Abs.&nbsp;1 lit.&nbsp;b DSGVO, soweit die Daten zur Anbahnung eines
+          Beschäftigungsverhältnisses erforderlich sind.
+        </p>
+        <p>
+          Die Übermittlung erfolgt ebenfalls über <strong>EmailJS</strong> wie in
+          Abschnitt&nbsp;4 beschrieben (ggf. Verarbeitung in Drittländern mit
+          geeigneten Garantien nach Art.&nbsp;46 DSGVO).
+        </p>
+        <p>
+          Bewerbungsunterlagen löschen wir nach Abschluss des Verfahrens,
+          spätestens jedoch sechs Monate nach Mitteilung der Entscheidung, sofern
+          keine längeren gesetzlichen Aufbewahrungspflichten oder berechtigte
+          Interessen (z.&nbsp;B. Dokumentation bei Diskriminierungsvorwürfen)
+          entgegenstehen und Sie nicht in eine längere Aufbewahrung eingewilligt
+          haben.
+        </p>
+      </section>
+
+      <section className="mt-8 space-y-3 text-slate-700">
+        <h2 className="text-xl font-semibold text-slate-900">
+          6. Kein Newsletter, keine Reichweiten- oder Nutzeranalyse
         </h2>
         <p>
           Wir versenden <strong>keinen Newsletter</strong> und werten Ihre Nutzung
@@ -142,28 +174,30 @@ export default function DatenschutzPage() {
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
-          6. Weitergabe von Daten
+          7. Weitergabe von Daten
         </h2>
         <p>
           Eine Weitergabe Ihrer personenbezogenen Daten an die vorgenannten
-          technischen Anbieter erfolgt, soweit dies für den Betrieb der Website
-          oder die Kontaktaufnahme erforderlich ist. Darüber hinaus geben wir Daten
-          nur weiter, wenn dies zur Vertragsabwicklung nötig ist, eine gesetzliche
-          Verpflichtung besteht oder Sie ausdrücklich eingewilligt haben.
+          technischen Anbieter erfolgt, soweit dies für den Betrieb der Website,
+          die Kontaktaufnahme oder das Bewerbungsverfahren erforderlich ist.
+          Darüber hinaus geben wir Daten nur weiter, wenn dies zur
+          Vertragsabwicklung nötig ist, eine gesetzliche Verpflichtung besteht oder
+          Sie ausdrücklich eingewilligt haben.
         </p>
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
-        <h2 className="text-xl font-semibold text-slate-900">7. Speicherdauer</h2>
+        <h2 className="text-xl font-semibold text-slate-900">8. Speicherdauer</h2>
         <p>
           Wir speichern personenbezogene Daten nur so lange, wie es für die
           jeweiligen Zwecke erforderlich ist oder gesetzliche
-          Aufbewahrungspflichten bestehen.
+          Aufbewahrungspflichten bestehen (siehe insbesondere Abschnitt&nbsp;5 bei
+          Bewerbungen).
         </p>
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
-        <h2 className="text-xl font-semibold text-slate-900">8. Ihre Rechte</h2>
+        <h2 className="text-xl font-semibold text-slate-900">9. Ihre Rechte</h2>
         <p>
           Sie haben das Recht auf Auskunft, Berichtigung, Löschung,
           Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch
@@ -171,13 +205,24 @@ export default function DatenschutzPage() {
         </p>
         <p>
           Außerdem haben Sie das Recht, sich bei einer Datenschutzaufsichtsbehörde
-          zu beschweren.
+          zu beschweren. Für Niedersachsen ist zuständig die{" "}
+          <strong>Landesbeauftragte für den Datenschutz Niedersachsen</strong>,
+          Prinzenstraße&nbsp;5, 30159 Hannover (
+          <a
+            href="https://www.lfd.niedersachsen.de"
+            className="text-slate-900 underline underline-offset-2 hover:text-slate-600"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            lfd.niedersachsen.de
+          </a>
+          ).
         </p>
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
-          9. Änderung dieser Datenschutzerklärung
+          10. Änderung dieser Datenschutzerklärung
         </h2>
         <p>
           Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen,

@@ -5,8 +5,19 @@ import JobCard from "@/components/JobCard";
 import Reveal from "@/components/Reveal";
 import SubpageHero from "@/components/SubpageHero";
 import type { EmailJsBewerbungConfig } from "@/lib/emailjs-config";
+import {
+  isLikelySpamHoneypot,
+  isOutsideRateLimit,
+  isTooFast,
+  isValidKontakt,
+  recordSuccessfulSubmit,
+} from "@/lib/form-security";
 import { sendBewerbungForm } from "@/lib/emailjs";
+import PrivacyConsentField from "@/components/PrivacyConsentField";
 import { jobs } from "@/lib/content";
+
+const MIN_MS_BEFORE_SEND = 2500;
+const RATE_LIMIT_MS = 45_000;
 
 type JobsPageClientProps = {
   emailJsBewerbung: EmailJsBewerbungConfig | null;
@@ -39,14 +50,58 @@ const fieldCls =
 
 export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps) {
   const [formData, setFormData] = useState<Bewerbung>(initialForm);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const openedAtRef = useRef<number>(
+    typeof performance !== "undefined" ? performance.now() : Date.now()
+  );
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatusMessage("");
+
+    if (honeypotRef.current && isLikelySpamHoneypot(honeypotRef.current.value)) {
+      setStatus("success");
+      setStatusMessage("Danke! Ihre Bewerbung wurde gesendet.");
+      return;
+    }
+
+    const elapsed =
+      typeof performance !== "undefined"
+        ? performance.now() - openedAtRef.current
+        : Date.now() - openedAtRef.current;
+    if (isTooFast(elapsed, MIN_MS_BEFORE_SEND)) {
+      setStatus("error");
+      setStatusMessage("Bitte prüfen Sie die Eingaben kurz und senden Sie erneut.");
+      return;
+    }
+
+    if (!isOutsideRateLimit("job", RATE_LIMIT_MS)) {
+      setStatus("error");
+      setStatusMessage(
+        "Sie haben kürzlich bereits eine Bewerbung gesendet. Bitte später erneut versuchen."
+      );
+      return;
+    }
+
+    const nameTrim = formData.name.trim();
+    if (nameTrim.length < 2) {
+      setStatus("error");
+      setStatusMessage("Bitte geben Sie Ihren Namen ein (mindestens 2 Zeichen).");
+      return;
+    }
+
+    if (!isValidKontakt(formData.kontakt)) {
+      setStatus("error");
+      setStatusMessage(
+        "Bitte geben Sie eine gültige Telefonnummer oder E-Mail-Adresse ein."
+      );
+      return;
+    }
 
     const file = fileInputRef.current?.files?.[0];
     if (file) {
@@ -66,6 +121,14 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
       }
     }
 
+    if (!privacyAccepted) {
+      setStatus("error");
+      setStatusMessage(
+        "Bitte bestätigen Sie die Kenntnisnahme der Datenschutzerklärung (Abschnitt Bewerbungen)."
+      );
+      return;
+    }
+
     const formEl = formRef.current;
     if (!formEl) return;
 
@@ -77,9 +140,11 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
         );
       }
       await sendBewerbungForm(formEl, emailJsBewerbung);
+      recordSuccessfulSubmit("job");
       setStatus("success");
       setStatusMessage("Danke! Ihre Bewerbung wurde gesendet.");
       setFormData(initialForm);
+      setPrivacyAccepted(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       setStatus("error");
@@ -152,9 +217,18 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
             ref={formRef}
             onSubmit={handleSubmit}
             encType="multipart/form-data"
-            className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+            className="relative mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
           >
             <input type="hidden" name="form_type" defaultValue="bewerbung" />
+
+            <input
+              ref={honeypotRef}
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden
+              className="pointer-events-none absolute -left-[9999px] h-px w-px opacity-0"
+            />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <input
@@ -162,6 +236,7 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
                 className={fieldCls}
                 placeholder="Name"
                 required
+                maxLength={120}
                 autoComplete="name"
                 value={formData.name}
                 onChange={(event) =>
@@ -173,7 +248,9 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
                 className={fieldCls}
                 placeholder="Telefon oder E-Mail"
                 required
-                autoComplete="email"
+                maxLength={200}
+                autoComplete="tel"
+                inputMode="tel"
                 value={formData.kontakt}
                 onChange={(event) =>
                   setFormData((prev) => ({ ...prev, kontakt: event.target.value }))
@@ -185,6 +262,7 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
               name="erfahrung"
               className={`min-h-24 ${fieldCls}`}
               placeholder="Erfahrung in der Reinigung (optional)"
+              maxLength={3000}
               value={formData.erfahrung}
               onChange={(event) =>
                 setFormData((prev) => ({ ...prev, erfahrung: event.target.value }))
@@ -226,6 +304,7 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
               name="wohnort"
               className={fieldCls}
               placeholder="Wohnort"
+              maxLength={120}
               autoComplete="address-level2"
               value={formData.wohnort}
               onChange={(event) =>
@@ -250,10 +329,17 @@ export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps
               name="nachricht"
               className={`min-h-24 ${fieldCls}`}
               placeholder="Kurze Nachricht"
+              maxLength={4000}
               value={formData.nachricht}
               onChange={(event) =>
                 setFormData((prev) => ({ ...prev, nachricht: event.target.value }))
               }
+            />
+
+            <PrivacyConsentField
+              variant="application"
+              checked={privacyAccepted}
+              onChange={setPrivacyAccepted}
             />
 
             <button

@@ -33,7 +33,7 @@ export default function Footer() {
             className="h-24 w-auto"
           />
           <p className="mt-4 max-w-xs text-sm text-slate-200">
-            Rein-Gebäudeservice – Professionelle Gebäudereinigung für
+            REIN Gebäudeservice – Professionelle Gebäudereinigung für
             Unternehmen in Hannover und Region.
           </p>
         </div>

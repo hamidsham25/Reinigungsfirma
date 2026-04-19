@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 export const SITE_URL = "https://rein-gebaeudeservice.de";
 export const SITE_NAME = "REIN Gebäudeservice";
 export const SITE_EMAIL = "info@rein-gebaeudeservice.de";
-export const SITE_PHONE = "+495111234567";
+/** Nur setzen, wenn dieselbe Nummer auch öffentlich steht (z. B. Impressum/Footer). Sonst leer lassen — sonst falsche Daten in Google. */
+export const SITE_PHONE = "";
 export const SITE_ADDRESS = {
   streetAddress: "Westerriede 3",
   postalCode: "30966",
@@ -77,7 +78,7 @@ export const localBusinessJsonLd = {
   name: SITE_NAME,
   url: SITE_URL,
   email: SITE_EMAIL,
-  telephone: SITE_PHONE,
+  ...(SITE_PHONE ? { telephone: SITE_PHONE } : {}),
   address: {
     "@type": "PostalAddress",
     ...SITE_ADDRESS,

@@ -31,6 +31,17 @@ export default function ImpressumPage() {
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
+          Umsatzsteuer und Steuernummer
+        </h2>
+        <p>
+          Die Angaben zur Umsatzsteuer-Identifikationsnummer und zur
+          Steuernummer werden nach Erteilung durch das zuständige Finanzamt hier
+          ergänzt.
+        </p>
+      </section>
+
+      <section className="mt-8 space-y-3 text-slate-700">
+        <h2 className="text-xl font-semibold text-slate-900">
           Haftung für Inhalte
         </h2>
         <p>
@@ -44,6 +55,19 @@ export default function ImpressumPage() {
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
+        <h2 className="text-xl font-semibold text-slate-900">
+          Haftung für Links
+        </h2>
+        <p>
+          Unser Angebot enthält ggf. Links zu externen Websites Dritter, auf deren
+          Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden
+          Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten
+          Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
+          verantwortlich.
+        </p>
+      </section>
+
+      <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">Urheberrecht</h2>
         <p>
           Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen
@@ -51,6 +75,34 @@ export default function ImpressumPage() {
           Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
           Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
           jeweiligen Autors bzw. Erstellers.
+        </p>
+        <p>
+          Soweit Bilder nicht selbst erstellt wurden, werden lizenzierte
+          Bestandsfotos (z.&nbsp;B. Unsplash) oder KI-generierte Abbildungen
+          verwendet; jeweilige Nutzungsrechte sind bei der Quelle einzuhalten.
+        </p>
+      </section>
+
+      <section className="mt-8 space-y-3 text-slate-700">
+        <h2 className="text-xl font-semibold text-slate-900">
+          Streitbeilegung und EU-Plattform
+        </h2>
+        <p>
+          Die Europäische Kommission stellt eine Plattform zur
+          Online-Streitbeilegung (OS) bereit:{" "}
+          <a
+            href="https://ec.europa.eu/consumers/odr/"
+            className="text-slate-900 underline underline-offset-2 hover:text-slate-600"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ec.europa.eu/consumers/odr
+          </a>
+          . Unsere E-Mail-Adresse finden Sie oben im Impressum.
+        </p>
+        <p>
+          Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren
+          vor einer Verbraucherschlichtungsstelle teilzunehmen.
         </p>
       </section>
       <p className="mt-10 text-sm text-slate-500">
