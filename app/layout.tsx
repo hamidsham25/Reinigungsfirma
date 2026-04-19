@@ -24,9 +24,6 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  icons: {
-    apple: "/apple-touch-icon.png",
-  },
   title: {
     default: `${SITE_NAME} | Gebäudereinigung in Hannover`,
     template: `%s | ${SITE_NAME}`,

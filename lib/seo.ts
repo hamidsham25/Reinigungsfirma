@@ -12,7 +12,8 @@ export const SITE_ADDRESS = {
   addressCountry: "DE",
 };
 
-export const DEFAULT_OG_IMAGE = "/images/hero-image.png";
+/** Default preview image (WhatsApp, LinkedIn, etc.) — matches `app/opengraph-image.png`. */
+export const DEFAULT_OG_IMAGE = "/opengraph-image.png";
 
 export const DEFAULT_KEYWORDS = [
   "Gebäudereinigung Hannover",
