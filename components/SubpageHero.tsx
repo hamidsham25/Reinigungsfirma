@@ -75,7 +75,21 @@ export default function SubpageHero({
         </div>
       ) : null}
 
-      {/* ── Image: flush top + right, large circular curve on left side ── */}
+      {/* ── Mobile image (top, below navbar) ── */}
+      <div className="relative z-10 w-full pt-[7.25rem] lg:hidden">
+        <div className="relative h-64 w-full sm:h-80">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1B4F72]/55 via-transparent to-transparent" />
+        </div>
+      </div>
+
+      {/* ── Image: flush top + right, large circular curve on left side (desktop) ── */}
       <motion.div
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -96,7 +110,7 @@ export default function SubpageHero({
       </motion.div>
 
       {/* ── Text content ── */}
-      <div className="relative z-30 mx-auto flex min-h-[580px] w-full max-w-7xl items-center px-4 pt-[7.25rem] pb-16 sm:px-6 lg:min-h-[640px] lg:px-8 lg:pb-20">
+      <div className="relative z-30 mx-auto flex w-full max-w-7xl items-start px-4 pb-16 pt-8 sm:px-6 lg:min-h-[640px] lg:items-center lg:px-8 lg:pb-20 lg:pt-[7.25rem]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -125,18 +139,6 @@ export default function SubpageHero({
             </Link>
           ) : null}
         </motion.div>
-      </div>
-
-      {/* ── Mobile image ── */}
-      <div className="relative h-72 w-full lg:hidden">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1B4F72]/50 to-transparent" />
       </div>
     </section>
   );

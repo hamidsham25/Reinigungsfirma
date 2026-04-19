@@ -25,52 +25,136 @@ export default function DatenschutzPage() {
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
-          2. Erhebung und Speicherung personenbezogener Daten
+          2. Hosting und Bereitstellung der Website (Vercel)
         </h2>
         <p>
-          Beim Aufruf dieser Website werden durch den technischen Betreiber der
-          Website automatisch Informationen in sogenannten Server-Logfiles
-          gespeichert. Erfasst werden insbesondere IP-Adresse, Datum und Uhrzeit
-          der Anfrage, aufgerufene Seite, Referrer-URL, Browsertyp und
+          Diese Website wird bei{" "}
+          <strong>Vercel Inc.</strong>, 440 N Barranca Ave #4133, Covina, CA
+          91723, USA, gehostet und technisch ausgeliefert. Beim Aufruf der Seiten
+          werden dort im Rahmen des Webhostings insbesondere Server-Logfiles
+          verarbeitet, z.&nbsp;B. IP-Adresse, Datum und Uhrzeit der Anfrage,
+          angeforderte Ressource, Referrer-URL sowie Browsertyp und
           Betriebssystem.
         </p>
         <p>
-          Die Verarbeitung erfolgt zur Sicherstellung eines stabilen und sicheren
-          Betriebs der Website auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.
+          Zweck ist der sichere und stabile Betrieb der Website. Rechtsgrundlage
+          ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse an
+          einer sicheren und funktionsfähigen Online-Präsenz). Soweit
+          personenbezogene Daten in die USA übermittelt werden, stützen wir uns
+          auf die Angemessenheitsbeschlüsse der EU-Kommission oder geeignete
+          Garantien im Sinne von Art.&nbsp;46 DSGVO, insbesondere die von Vercel
+          angebotenen Standardvertragsklauseln, sofern kein Angemessenheitsbeschluss
+          greift.
+        </p>
+        <p>
+          Weitere Hinweise zu Vercel finden Sie unter{" "}
+          <a
+            href="https://vercel.com/legal/privacy-policy"
+            className="text-slate-900 underline underline-offset-2 hover:text-slate-600"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            vercel.com/legal/privacy-policy
+          </a>
+          .
         </p>
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
-          3. Kontaktaufnahme
+          3. Domain und DNS (IONOS)
         </h2>
         <p>
-          Wenn Sie uns per Formular oder E-Mail kontaktieren, werden Ihre Angaben
-          (z. B. Name, E-Mail-Adresse, Telefonnummer und Nachricht) zur
-          Bearbeitung Ihrer Anfrage gespeichert und verarbeitet.
+          Die Domain dieser Website ist bei der{" "}
+          <strong>IONOS SE</strong>, Elgendorfer Str.&nbsp;57, 56410 Montabaur,
+          Deutschland, registriert. Die Domainverwaltung und die technische
+          Auflösung (DNS) können dabei personenbezogene Daten im erforderlichen
+          Umfang verarbeiten (z.&nbsp;B. bei der Namensauflösung durch Systeme von
+          IONOS oder verbundene Infrastruktur).
         </p>
         <p>
-          Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche
-          Maßnahmen) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
-          einer effizienten Kommunikation).
+          Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO (Erfüllung
+          des Auftrags zur Domain-/DNS-Bereitstellung) und Art.&nbsp;6 Abs.&nbsp;1
+          lit.&nbsp;f DSGVO (berechtigtes Interesse an einer erreichbaren Domain).
+          Details entnehmen Sie der Datenschutzerklärung von IONOS unter{" "}
+          <a
+            href="https://www.ionos.de/terms-gtc/datenschutzerklaerung/"
+            className="text-slate-900 underline underline-offset-2 hover:text-slate-600"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ionos.de/terms-gtc/datenschutzerklaerung
+          </a>
+          .
         </p>
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
-          4. Weitergabe von Daten
+          4. Kontaktaufnahme per E-Mail und Kontaktformular (EmailJS)
         </h2>
         <p>
-          Eine Weitergabe Ihrer personenbezogenen Daten an Dritte erfolgt nur,
-          wenn dies zur Vertragsabwicklung erforderlich ist, eine gesetzliche
+          Wenn Sie uns per E-Mail kontaktieren, verarbeiten wir die von Ihnen
+          übermittelten Daten (insbesondere Absenderadresse und Inhalt der
+          Nachricht) zur Bearbeitung Ihrer Anfrage.
+        </p>
+        <p>
+          Nutzen Sie unser Kontaktformular, werden die von Ihnen eingegebenen
+          Daten (z.&nbsp;B. Name, E-Mail-Adresse, Telefonnummer und Nachricht)
+          über den Dienst <strong>EmailJS</strong> zum Zwecke der Übermittlung
+          und Zustellung der Nachricht verarbeitet. Anbieter ist{" "}
+          <strong>EmailJS Pte. Ltd.</strong>, Singapur. Nach eigenen Angaben von
+          EmailJS erfolgt die technische Verarbeitung u.&nbsp;a. über
+          Infrastruktur in den <strong>USA</strong> (z.&nbsp;B. Hosting). Für
+          betroffene Personen aus dem EU-/EWR-Raum stellt EmailJS bei
+          entsprechenden Übermittlungen die Einhaltung geeigneter Garantien nach
+          Art.&nbsp;46 DSGVO sicher (u.&nbsp;a. Standardvertragsklauseln).
+          Rechtsgrundlagen sind Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO
+          (vorvertragliche Maßnahmen und Vertragsanbahnung) sowie Art.&nbsp;6
+          Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse an einer
+          funktionierenden Kontaktaufnahme).
+        </p>
+        <p>
+          Hinweise zum Datenschutz bei EmailJS finden Sie unter{" "}
+          <a
+            href="https://www.emailjs.com/legal/privacy-policy/"
+            className="text-slate-900 underline underline-offset-2 hover:text-slate-600"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            emailjs.com/legal/privacy-policy
+          </a>
+          .
+        </p>
+      </section>
+
+      <section className="mt-8 space-y-3 text-slate-700">
+        <h2 className="text-xl font-semibold text-slate-900">
+          5. Kein Newsletter, keine Reichweiten- oder Nutzeranalyse
+        </h2>
+        <p>
+          Wir versenden <strong>keinen Newsletter</strong> und werten Ihre Nutzung
+          dieser Website <strong>nicht mit Analyse-, Tracking- oder
+          Marketing-Tools</strong> aus (z.&nbsp;B. kein Google Analytics, keine
+          nutzerbezogene Statistik über Drittanbieter).
+        </p>
+      </section>
+
+      <section className="mt-8 space-y-3 text-slate-700">
+        <h2 className="text-xl font-semibold text-slate-900">
+          6. Weitergabe von Daten
+        </h2>
+        <p>
+          Eine Weitergabe Ihrer personenbezogenen Daten an die vorgenannten
+          technischen Anbieter erfolgt, soweit dies für den Betrieb der Website
+          oder die Kontaktaufnahme erforderlich ist. Darüber hinaus geben wir Daten
+          nur weiter, wenn dies zur Vertragsabwicklung nötig ist, eine gesetzliche
           Verpflichtung besteht oder Sie ausdrücklich eingewilligt haben.
         </p>
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
-        <h2 className="text-xl font-semibold text-slate-900">
-          5. Speicherdauer
-        </h2>
+        <h2 className="text-xl font-semibold text-slate-900">7. Speicherdauer</h2>
         <p>
           Wir speichern personenbezogene Daten nur so lange, wie es für die
           jeweiligen Zwecke erforderlich ist oder gesetzliche
@@ -79,9 +163,7 @@ export default function DatenschutzPage() {
       </section>
 
       <section className="mt-8 space-y-3 text-slate-700">
-        <h2 className="text-xl font-semibold text-slate-900">
-          6. Ihre Rechte
-        </h2>
+        <h2 className="text-xl font-semibold text-slate-900">8. Ihre Rechte</h2>
         <p>
           Sie haben das Recht auf Auskunft, Berichtigung, Löschung,
           Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch
@@ -95,12 +177,11 @@ export default function DatenschutzPage() {
 
       <section className="mt-8 space-y-3 text-slate-700">
         <h2 className="text-xl font-semibold text-slate-900">
-          7. Änderung dieser Datenschutzerklärung
+          9. Änderung dieser Datenschutzerklärung
         </h2>
         <p>
-          Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf
-          anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen
-          entspricht.
+          Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen,
+          damit sie stets den aktuellen rechtlichen Anforderungen entspricht.
         </p>
       </section>
 
@@ -110,4 +191,3 @@ export default function DatenschutzPage() {
     </main>
   );
 }
-

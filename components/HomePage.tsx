@@ -66,11 +66,11 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="max-w-2xl text-white"
           >
-            <p className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs uppercase tracking-[0.22em] text-slate-200">
-              <span className="font-extrabold text-[#FFA400]">
+            <p className="flex w-fit max-w-full flex-col gap-1 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[0.6875rem] uppercase leading-snug tracking-[0.14em] text-slate-200 sm:inline-flex sm:flex-row sm:items-center sm:gap-2 sm:py-1.5 sm:text-xs sm:tracking-[0.22em]">
+              <span className="font-extrabold whitespace-nowrap text-[#FFA400]">
                 REIN Gebäudeservice
               </span>
-              <span className="font-semibold text-slate-100">
+              <span className="font-semibold whitespace-nowrap text-slate-100">
                 – Hannover & Region
               </span>
             </p>
@@ -158,8 +158,8 @@ export default function HomePage() {
           <Reveal delay={0.1}>
             <div className="relative min-h-[420px] overflow-hidden rounded-3xl shadow-2xl shadow-[#1B4F72]/15">
               <Image
-                src="/images/praxis-hero.jpg"
-                alt="Team von REIN Gebäudeservice"
+                src="/images/about-us.png"
+                alt="Team von REIN Gebäudeservice bei der professionellen Büroreinigung"
                 fill
                 sizes="(max-width: 1024px) 100vw, 45vw"
                 className="object-cover"

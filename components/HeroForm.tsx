@@ -6,7 +6,7 @@ import { sendLeadEmail } from "@/lib/emailjs";
 export default function HeroForm() {
   const [objektart, setObjektart] = useState("");
   const [name, setName] = useState("");
-  const [telefon, setTelefon] = useState("");
+  const [flaeche, setFlaeche] = useState("");
   const [email, setEmail] = useState("");
   const [nachricht, setNachricht] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
@@ -24,7 +24,7 @@ export default function HeroForm() {
         form_type: "hero-schnellanfrage",
         name,
         email,
-        telefon,
+        flaeche_m2: flaeche,
         objektart,
         ort: "Nicht angegeben",
         frequenz: "Nicht angegeben",
@@ -36,7 +36,7 @@ export default function HeroForm() {
       setStatusMessage("Danke! Ihre Anfrage wurde erfolgreich gesendet.");
       setObjektart("");
       setName("");
-      setTelefon("");
+      setFlaeche("");
       setEmail("");
       setNachricht("");
     } catch (error) {
@@ -82,9 +82,10 @@ export default function HeroForm() {
           <input
             type="text"
             required
-            value={telefon}
-            onChange={(e) => setTelefon(e.target.value)}
-            placeholder="Telefon *"
+            value={flaeche}
+            onChange={(e) => setFlaeche(e.target.value)}
+            placeholder="Fläche (m²) *"
+            inputMode="decimal"
             className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#1B4F72] focus:ring-2 focus:ring-[#1B4F72]/15"
           />
         </div>

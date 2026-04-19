@@ -18,6 +18,7 @@ export default function ImpressumPage() {
           Angaben gemäß § 5 TMG
         </h2>
         <p>REIN Gebäudeservice</p>
+        <p>Rechtsform: Einzelunternehmen</p>
         <p>Inhaber: Omed Sham</p>
         <p>Westerriede 3</p>
         <p>30966 Hemmingen</p>

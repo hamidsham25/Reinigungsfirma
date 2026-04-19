@@ -20,7 +20,6 @@ export default function Navbar() {
   const isHome = pathname === "/";
   const isLeistungenPage = pathname.startsWith("/leistungen");
   const isJobsPage = pathname === "/jobs";
-  const phoneHref = "tel:+495111234567";
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -91,7 +90,7 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={handleLogoClick}
-          className="relative z-20 flex h-[5.6rem] w-[14rem] shrink-0 items-center sm:h-[6.2rem] sm:w-[17rem] lg:h-[7rem] lg:w-[24.5rem]"
+          className="relative z-20 flex h-[5.6rem] w-[15.5rem] shrink-0 items-center sm:h-[6.2rem] sm:w-[18.5rem] lg:h-[7rem] lg:w-[28.5rem]"
         >
           <Image
             src="/images/logo_white.png"
@@ -99,7 +98,8 @@ export default function Navbar() {
             width={430}
             height={128}
             priority
-            className={`absolute left-0 h-[5.6rem] w-auto transition-opacity duration-300 sm:h-[6.2rem] lg:h-[7rem] lg:origin-left lg:scale-[1.2] ${
+            loading="eager"
+            className={`absolute left-0 h-[5.6rem] w-auto origin-left scale-[1.09] transition-opacity duration-300 sm:h-[6.2rem] sm:scale-[1.16] lg:h-[7rem] lg:scale-[1.44] ${
               isTransparent ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -108,7 +108,7 @@ export default function Navbar() {
             alt="REIN Gebäudeservice Logo"
             width={430}
             height={128}
-            className={`absolute left-0 h-[5.6rem] w-auto transition-opacity duration-300 sm:h-[6.2rem] lg:h-[7rem] lg:origin-left lg:scale-[1.2] ${
+            className={`absolute left-0 h-[5.6rem] w-auto origin-left scale-[1.09] transition-opacity duration-300 sm:h-[6.2rem] sm:scale-[1.16] lg:h-[7rem] lg:scale-[1.44] ${
               isTransparent ? "opacity-0" : "opacity-100"
             }`}
           />
@@ -202,18 +202,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <Link
-            href={phoneHref}
-            className={`inline-flex h-11 w-11 items-center justify-center rounded-full text-sm font-semibold transition hover:-translate-y-0.5 ${
-              isTransparent
-                ? "border border-[#FFA400]/70 bg-[#FFA400] text-white shadow-lg shadow-[#FFA400]/35 hover:bg-[#E59400]"
-                : "border border-[#FFA400]/70 bg-[#FFA400] text-white shadow-lg shadow-[#FFA400]/30 hover:bg-[#E59400]"
-            }`}
-            aria-label="Jetzt anrufen"
-          >
-            <span aria-hidden>📞</span>
-          </Link>
+        <div className="hidden items-center lg:flex">
           <Link
             href="/#kontakt"
             className={`rounded-full px-6 py-3 text-sm font-semibold transition hover:-translate-y-0.5 ${
@@ -302,14 +291,6 @@ export default function Navbar() {
               </div>
 
               <div className="mt-5 flex flex-wrap gap-3">
-                <Link
-                  href={phoneHref}
-                  onClick={() => setMobileOpen(false)}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded border border-[#FFA400]/60 bg-[#FFF1CC] text-base text-[#E59400]"
-                  aria-label="Jetzt anrufen"
-                >
-                  <span aria-hidden>📞</span>
-                </Link>
                 <Link
                   href="/#kontakt"
                   onClick={() => setMobileOpen(false)}

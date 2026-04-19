@@ -6,7 +6,7 @@ import { sendLeadEmail } from "@/lib/emailjs";
 type ContactState = {
   name: string;
   email: string;
-  telefon: string;
+  flaeche: string;
   objektart: string;
   ort: string;
   frequenz: string;
@@ -17,7 +17,7 @@ type ContactState = {
 const initialState: ContactState = {
   name: "",
   email: "",
-  telefon: "",
+  flaeche: "",
   objektart: "Büro",
   ort: "",
   frequenz: "woechentlich",
@@ -48,7 +48,7 @@ export default function ContactForm() {
         form_type: "kontaktformular",
         name: f.name,
         email: f.email,
-        telefon: f.telefon,
+        flaeche_m2: f.flaeche,
         objektart: f.objektart,
         ort: f.ort,
         frequenz: f.frequenz,
@@ -97,16 +97,17 @@ export default function ContactForm() {
           value={f.email}
           onChange={(e) => set("email", e.target.value)}
         />
-        <input
-          className={inputCls}
-          placeholder="Telefon *"
-          required
-          value={f.telefon}
-          onChange={(e) => set("telefon", e.target.value)}
-        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
+        <input
+          className={inputCls}
+          placeholder="Fläche (m²) *"
+          required
+          inputMode="decimal"
+          value={f.flaeche}
+          onChange={(e) => set("flaeche", e.target.value)}
+        />
         <input
           className={inputCls}
           placeholder="Ort / PLZ des Objekts *"
@@ -114,8 +115,11 @@ export default function ContactForm() {
           value={f.ort}
           onChange={(e) => set("ort", e.target.value)}
         />
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
         <input
-          className={inputCls}
+          className={`${inputCls} sm:col-span-2`}
           placeholder="Gewünschter Start (optional)"
           value={f.start}
           onChange={(e) => set("start", e.target.value)}

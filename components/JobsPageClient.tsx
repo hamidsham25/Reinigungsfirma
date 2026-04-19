@@ -1,9 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import JobCard from "@/components/JobCard";
 import Reveal from "@/components/Reveal";
 import SubpageHero from "@/components/SubpageHero";
+import { sendBewerbungForm } from "@/lib/emailjs";
 import { jobs } from "@/lib/content";
 
 type Bewerbung = {
@@ -26,12 +27,58 @@ const initialForm: Bewerbung = {
   nachricht: "",
 };
 
+const MAX_PDF_BYTES = 3 * 1024 * 1024;
+
+const fieldCls =
+  "w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]";
+
 export default function JobsPageClient() {
   const [formData, setFormData] = useState<Bewerbung>(initialForm);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Job Bewerbung", formData);
+    setStatusMessage("");
+
+    const file = fileInputRef.current?.files?.[0];
+    if (file) {
+      const isPdf =
+        file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+      if (!isPdf) {
+        setStatus("error");
+        setStatusMessage("Bitte nur eine PDF-Datei anhängen.");
+        return;
+      }
+      if (file.size > MAX_PDF_BYTES) {
+        setStatus("error");
+        setStatusMessage(
+          `Die PDF-Datei darf höchstens ${MAX_PDF_BYTES / (1024 * 1024)} MB groß sein.`
+        );
+        return;
+      }
+    }
+
+    const formEl = formRef.current;
+    if (!formEl) return;
+
+    setStatus("sending");
+    try {
+      await sendBewerbungForm(formEl);
+      setStatus("success");
+      setStatusMessage("Danke! Ihre Bewerbung wurde gesendet.");
+      setFormData(initialForm);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      setStatus("error");
+      setStatusMessage(
+        error instanceof Error
+          ? error.message
+          : "Die Bewerbung konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+      );
+    }
   };
 
   return (
@@ -92,23 +139,31 @@ export default function JobsPageClient() {
         <Reveal>
           <h2 className="text-3xl font-semibold text-slate-900">Jetzt bewerben</h2>
           <form
+            ref={formRef}
             onSubmit={handleSubmit}
+            encType="multipart/form-data"
             className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
           >
+            <input type="hidden" name="form_type" defaultValue="bewerbung" />
+
             <div className="grid gap-4 sm:grid-cols-2">
               <input
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]"
+                name="name"
+                className={fieldCls}
                 placeholder="Name"
                 required
+                autoComplete="name"
                 value={formData.name}
                 onChange={(event) =>
                   setFormData((prev) => ({ ...prev, name: event.target.value }))
                 }
               />
               <input
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]"
-                placeholder="Kontaktdaten"
+                name="kontakt"
+                className={fieldCls}
+                placeholder="Telefon oder E-Mail"
                 required
+                autoComplete="email"
                 value={formData.kontakt}
                 onChange={(event) =>
                   setFormData((prev) => ({ ...prev, kontakt: event.target.value }))
@@ -117,8 +172,9 @@ export default function JobsPageClient() {
             </div>
 
             <textarea
-              className="min-h-24 w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]"
-              placeholder="Erfahrung in der Reinigung"
+              name="erfahrung"
+              className={`min-h-24 ${fieldCls}`}
+              placeholder="Erfahrung in der Reinigung (optional)"
               value={formData.erfahrung}
               onChange={(event) =>
                 setFormData((prev) => ({ ...prev, erfahrung: event.target.value }))
@@ -127,7 +183,8 @@ export default function JobsPageClient() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <select
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]"
+                name="fuehrerschein"
+                className={fieldCls}
                 value={formData.fuehrerschein}
                 onChange={(event) =>
                   setFormData((prev) => ({
@@ -140,7 +197,8 @@ export default function JobsPageClient() {
                 <option value="Nein">Führerschein: Nein</option>
               </select>
               <select
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]"
+                name="verfuegbarkeit"
+                className={fieldCls}
                 value={formData.verfuegbarkeit}
                 onChange={(event) =>
                   setFormData((prev) => ({
@@ -155,16 +213,32 @@ export default function JobsPageClient() {
             </div>
 
             <input
-              className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]"
+              name="wohnort"
+              className={fieldCls}
               placeholder="Wohnort"
+              autoComplete="address-level2"
               value={formData.wohnort}
               onChange={(event) =>
                 setFormData((prev) => ({ ...prev, wohnort: event.target.value }))
               }
             />
 
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Lebenslauf oder Referenzen (optional, PDF, max. 3 MB)
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                name="bewerbung_anhang"
+                accept="application/pdf,.pdf"
+                className={`${fieldCls} cursor-pointer text-slate-600 file:mr-4 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-slate-800`}
+              />
+            </div>
+
             <textarea
-              className="min-h-24 w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]"
+              name="nachricht"
+              className={`min-h-24 ${fieldCls}`}
               placeholder="Kurze Nachricht"
               value={formData.nachricht}
               onChange={(event) =>
@@ -174,10 +248,20 @@ export default function JobsPageClient() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-[#1B4F72] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#163f5b]"
+              disabled={status === "sending"}
+              className="w-full rounded-lg bg-[#1B4F72] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#163f5b] disabled:opacity-70"
             >
-              Bewerbung absenden
+              {status === "sending" ? "Wird gesendet..." : "Bewerbung absenden"}
             </button>
+            {statusMessage ? (
+              <p
+                className={`text-sm ${
+                  status === "success" ? "text-emerald-700" : "text-rose-700"
+                }`}
+              >
+                {statusMessage}
+              </p>
+            ) : null}
           </form>
         </Reveal>
       </section>
