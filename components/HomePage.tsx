@@ -9,6 +9,7 @@ import JobCard from "@/components/JobCard";
 import Reveal from "@/components/Reveal";
 import ServiceCard from "@/components/ServiceCard";
 import TrustSection from "@/components/TrustSection";
+import type { EmailJsLeadConfig } from "@/lib/emailjs-config";
 import { jobs, services } from "@/lib/content";
 
 const serviceIcons: Record<string, string> = {
@@ -45,7 +46,11 @@ const strengthsShowcase = [
   },
 ] as const;
 
-export default function HomePage() {
+type HomePageProps = {
+  emailJsLead: EmailJsLeadConfig | null;
+};
+
+export default function HomePage({ emailJsLead }: HomePageProps) {
   return (
     <main className="bg-white">
       {/* ── Hero ── */}
@@ -103,7 +108,7 @@ export default function HomePage() {
             transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
             className="w-full lg:ml-auto lg:max-w-md"
           >
-            <HeroForm />
+            <HeroForm emailJs={emailJsLead} />
           </motion.div>
         </div>
       </section>
@@ -339,7 +344,7 @@ export default function HomePage() {
               innerhalb von 24 Stunden zurück.
             </p>
             <div className="mt-10">
-              <ContactForm />
+              <ContactForm emailJs={emailJsLead} />
             </div>
           </Reveal>
         </div>

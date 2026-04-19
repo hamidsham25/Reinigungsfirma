@@ -1,9 +1,14 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import type { EmailJsLeadConfig } from "@/lib/emailjs-config";
 import { sendLeadEmail } from "@/lib/emailjs";
 
-export default function HeroForm() {
+type HeroFormProps = {
+  emailJs: EmailJsLeadConfig | null;
+};
+
+export default function HeroForm({ emailJs }: HeroFormProps) {
   const [objektart, setObjektart] = useState("");
   const [name, setName] = useState("");
   const [flaeche, setFlaeche] = useState("");
@@ -20,17 +25,25 @@ export default function HeroForm() {
     setStatusMessage("");
 
     try {
-      await sendLeadEmail({
-        form_type: "hero-schnellanfrage",
-        name,
-        email,
-        flaeche_m2: flaeche,
-        objektart,
-        ort: "Nicht angegeben",
-        frequenz: "Nicht angegeben",
-        start: "Nicht angegeben",
-        nachricht: nachricht || "Keine Nachricht",
-      });
+      if (!emailJs) {
+        throw new Error(
+          "EmailJS ist nicht konfiguriert. Bitte .env.local prüfen und den Server neu starten."
+        );
+      }
+      await sendLeadEmail(
+        {
+          form_type: "hero-schnellanfrage",
+          name,
+          email,
+          flaeche_m2: flaeche,
+          objektart,
+          ort: "Nicht angegeben",
+          frequenz: "Nicht angegeben",
+          start: "Nicht angegeben",
+          nachricht: nachricht || "Keine Nachricht",
+        },
+        emailJs
+      );
 
       setStatus("success");
       setStatusMessage("Danke! Ihre Anfrage wurde erfolgreich gesendet.");

@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import HomePage from "@/components/HomePage";
+import { getEmailJsLeadConfig } from "@/lib/emailjs-config";
 import { createPageMetadata } from "@/lib/seo";
+
+/** Jede Anfrage liest .env.local neu – verhindert gecachte „kein EmailJS“ nach leerem ersten Build. */
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
   title:
@@ -16,5 +21,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function Home() {
-  return <HomePage />;
+  noStore();
+  const emailJsLead = getEmailJsLeadConfig();
+  return <HomePage emailJsLead={emailJsLead} />;
 }

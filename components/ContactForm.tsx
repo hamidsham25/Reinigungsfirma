@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import type { EmailJsLeadConfig } from "@/lib/emailjs-config";
 import { sendLeadEmail } from "@/lib/emailjs";
 
 type ContactState = {
@@ -28,7 +29,11 @@ const initialState: ContactState = {
 const inputCls =
   "w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#1B4F72] focus:ring-2 focus:ring-[#1B4F72]/15";
 
-export default function ContactForm() {
+type ContactFormProps = {
+  emailJs: EmailJsLeadConfig | null;
+};
+
+export default function ContactForm({ emailJs }: ContactFormProps) {
   const [f, setF] = useState<ContactState>(initialState);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
     "idle"
@@ -44,17 +49,25 @@ export default function ContactForm() {
     setStatusMessage("");
 
     try {
-      await sendLeadEmail({
-        form_type: "kontaktformular",
-        name: f.name,
-        email: f.email,
-        flaeche_m2: f.flaeche,
-        objektart: f.objektart,
-        ort: f.ort,
-        frequenz: f.frequenz,
-        start: f.start || "Nicht angegeben",
-        nachricht: f.nachricht || "Keine Nachricht",
-      });
+      if (!emailJs) {
+        throw new Error(
+          "EmailJS ist nicht konfiguriert. Bitte .env.local prüfen und den Server neu starten."
+        );
+      }
+      await sendLeadEmail(
+        {
+          form_type: "kontaktformular",
+          name: f.name,
+          email: f.email,
+          flaeche_m2: f.flaeche,
+          objektart: f.objektart,
+          ort: f.ort,
+          frequenz: f.frequenz,
+          start: f.start || "Nicht angegeben",
+          nachricht: f.nachricht || "Keine Nachricht",
+        },
+        emailJs
+      );
 
       setStatus("success");
       setStatusMessage("Danke! Ihre Anfrage wurde erfolgreich gesendet.");

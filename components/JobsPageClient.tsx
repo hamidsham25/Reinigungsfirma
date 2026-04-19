@@ -4,8 +4,13 @@ import { FormEvent, useRef, useState } from "react";
 import JobCard from "@/components/JobCard";
 import Reveal from "@/components/Reveal";
 import SubpageHero from "@/components/SubpageHero";
+import type { EmailJsBewerbungConfig } from "@/lib/emailjs-config";
 import { sendBewerbungForm } from "@/lib/emailjs";
 import { jobs } from "@/lib/content";
+
+type JobsPageClientProps = {
+  emailJsBewerbung: EmailJsBewerbungConfig | null;
+};
 
 type Bewerbung = {
   name: string;
@@ -32,7 +37,7 @@ const MAX_PDF_BYTES = 3 * 1024 * 1024;
 const fieldCls =
   "w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-[#1B4F72]";
 
-export default function JobsPageClient() {
+export default function JobsPageClient({ emailJsBewerbung }: JobsPageClientProps) {
   const [formData, setFormData] = useState<Bewerbung>(initialForm);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -66,7 +71,12 @@ export default function JobsPageClient() {
 
     setStatus("sending");
     try {
-      await sendBewerbungForm(formEl);
+      if (!emailJsBewerbung) {
+        throw new Error(
+          "EmailJS ist nicht konfiguriert. Bitte .env.local prüfen und den Server neu starten."
+        );
+      }
+      await sendBewerbungForm(formEl, emailJsBewerbung);
       setStatus("success");
       setStatusMessage("Danke! Ihre Bewerbung wurde gesendet.");
       setFormData(initialForm);

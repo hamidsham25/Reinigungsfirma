@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import JobsPageClient from "@/components/JobsPageClient";
+import { getEmailJsBewerbungConfig } from "@/lib/emailjs-config";
 import { createPageMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Jobs als Reinigungskraft in Hannover | Teilzeit & Minijob",
@@ -16,6 +20,8 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function JobsPage() {
-  return <JobsPageClient />;
+  noStore();
+  const emailJsBewerbung = getEmailJsBewerbungConfig();
+  return <JobsPageClient emailJsBewerbung={emailJsBewerbung} />;
 }
 
