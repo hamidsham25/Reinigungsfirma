@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 const serviceLinks = [
@@ -25,6 +25,29 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const isTransparent = !isLegalPage && !isScrolled && !mobileOpen;
+  const dropdownCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+
+  const clearDropdownCloseTimer = () => {
+    if (dropdownCloseTimerRef.current) {
+      clearTimeout(dropdownCloseTimerRef.current);
+      dropdownCloseTimerRef.current = null;
+    }
+  };
+
+  const openLeistungenDropdown = () => {
+    clearDropdownCloseTimer();
+    setDropdownOpen(true);
+  };
+
+  const scheduleCloseLeistungenDropdown = () => {
+    clearDropdownCloseTimer();
+    dropdownCloseTimerRef.current = setTimeout(() => {
+      setDropdownOpen(false);
+      dropdownCloseTimerRef.current = null;
+    }, 220);
+  };
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50);
@@ -60,6 +83,8 @@ export default function Navbar() {
       window.removeEventListener("hashchange", updateActiveSection);
     };
   }, [isHome]);
+
+  useEffect(() => () => clearDropdownCloseTimer(), []);
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (!isHome) {
@@ -117,10 +142,11 @@ export default function Navbar() {
         <div className="hidden items-center gap-7 lg:absolute lg:left-1/2 lg:z-10 lg:flex lg:-translate-x-1/2">
           <div
             className="relative"
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
+            onMouseEnter={openLeistungenDropdown}
+            onMouseLeave={scheduleCloseLeistungenDropdown}
           >
             <button
+              type="button"
               className={`text-sm font-semibold uppercase tracking-wide transition ${
                 isLeistungenPage || (isHome && activeSection === "leistungen")
                   ? "text-[#FFA400]"
@@ -142,25 +168,27 @@ export default function Navbar() {
             </button>
             <AnimatePresence>
               {dropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute left-0 top-8 w-48 rounded border border-slate-200 bg-white py-1 shadow-lg"
-                >
-                  {serviceLinks.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`block px-4 py-2 text-sm transition hover:bg-slate-50 hover:text-[#FFA400] ${
-                        pathname === item.href ? "text-[#FFA400]" : "text-slate-600"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </motion.div>
+                <div className="absolute left-0 top-full w-48 pt-1.5">
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="rounded border border-slate-200 bg-white py-1 shadow-lg"
+                  >
+                    {serviceLinks.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`block px-4 py-2 text-sm transition hover:bg-slate-50 hover:text-[#FFA400] ${
+                          pathname === item.href ? "text-[#FFA400]" : "text-slate-600"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                </div>
               )}
             </AnimatePresence>
           </div>

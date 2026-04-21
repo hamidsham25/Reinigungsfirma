@@ -13,7 +13,7 @@ export const metadata: Metadata = createPageMetadata({
     "Arztpraxis Reinigung",
     "Hygienereinigung Gesundheitszentrum",
   ],
-  image: "/images/praxis-hero.jpg",
+  image: "/images/about-us.png",
 });
 
 export default function PraxisPage() {

@@ -11,7 +11,7 @@ type ServicePageTemplateProps = {
 
 const heroImageMap: Record<ServiceItem["key"], string> = {
   buero: "/images/buero-hero.jpg",
-  praxis: "/images/praxis-hero.jpg",
+  praxis: "/images/about-us.png",
   kita: "/images/kita-hero.jpg",
   sanitaer: "/images/random-image.jpg",
 };
