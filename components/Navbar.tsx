@@ -139,7 +139,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <div className="hidden items-center gap-7 lg:absolute lg:left-1/2 lg:z-10 lg:flex lg:-translate-x-1/2">
+        <div className="hidden items-center gap-7 lg:absolute lg:left-1/2 lg:z-30 lg:flex lg:-translate-x-1/2">
           <div
             className="relative"
             onMouseEnter={openLeistungenDropdown}
@@ -147,6 +147,8 @@ export default function Navbar() {
           >
             <button
               type="button"
+              onMouseEnter={openLeistungenDropdown}
+              onMouseLeave={scheduleCloseLeistungenDropdown}
               className={`text-sm font-semibold uppercase tracking-wide transition ${
                 isLeistungenPage || (isHome && activeSection === "leistungen")
                   ? "text-[#FFA400]"
@@ -170,6 +172,8 @@ export default function Navbar() {
               {dropdownOpen && (
                 <div className="absolute left-0 top-full w-48 pt-1.5">
                   <motion.div
+                    onMouseEnter={openLeistungenDropdown}
+                    onMouseLeave={scheduleCloseLeistungenDropdown}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}

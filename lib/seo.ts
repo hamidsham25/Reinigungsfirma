@@ -13,7 +13,7 @@ export const SITE_ADDRESS = {
 };
 
 /** Default preview image (WhatsApp, LinkedIn, etc.) — matches `app/opengraph-image.png`. */
-export const DEFAULT_OG_IMAGE = "/opengraph-image.png";
+export const DEFAULT_OG_IMAGE = "/opengraph-image.png?v=2";
 
 export const DEFAULT_KEYWORDS = [
   "Gebäudereinigung Hannover",
@@ -40,6 +40,8 @@ export function createPageMetadata({
   keywords = [],
   image = DEFAULT_OG_IMAGE,
 }: PageMetadataInput): Metadata {
+  const absoluteImageUrl = image.startsWith("http") ? image : `${SITE_URL}${image}`;
+
   return {
     title,
     description,
@@ -56,7 +58,7 @@ export function createPageMetadata({
       type: "website",
       images: [
         {
-          url: image,
+          url: absoluteImageUrl,
           width: 1200,
           height: 630,
           alt: `${SITE_NAME} - ${title}`,
@@ -67,7 +69,14 @@ export function createPageMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [image],
+      images: [
+        {
+          url: absoluteImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${SITE_NAME} - ${title}`,
+        },
+      ],
     },
   };
 }
